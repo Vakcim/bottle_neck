@@ -2,7 +2,11 @@
 .venv/
 __pycache__/
 *.pyc
+
 data/
+!src/data/
+!src/data/**
+
 .DS_Store
 .idea/
 .vscode/
