@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: tinvest-trading-bot
+Version: 0.1.0
+Summary: Research trading bot data layer for T-Invest API
+Requires-Python: >=3.11
+Requires-Dist: pandas>=2.2.0
+Requires-Dist: pyarrow>=15.0.0
+Requires-Dist: duckdb>=0.10.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: pydantic>=2.7.0
+Requires-Dist: pydantic-settings>=2.2.0
+Requires-Dist: PyYAML>=6.0.0
+Requires-Dist: typer>=0.12.0
+Requires-Dist: loguru>=0.7.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: feedparser>=6.0.11
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0.0; extra == "dev"
+Requires-Dist: ruff>=0.5.0; extra == "dev"

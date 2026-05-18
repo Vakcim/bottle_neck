@@ -1,0 +1,17 @@
+strategy:
+  name: candidate_v1
+  threshold: 0.50
+  hold_days: 7
+  max_positions: 3
+  fee_round_trip: 0.001
+  excluded_tickers:
+    - AFLT
+    - GAZP
+
+model:
+  type: random_forest
+  n_estimators: 300
+  max_depth: 6
+  min_samples_leaf: 20
+  class_weight: balanced
+  random_state: 42

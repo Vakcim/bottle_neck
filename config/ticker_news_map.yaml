@@ -1,0 +1,109 @@
+tickers:
+  SBER:
+    company_names:
+      - Сбер
+      - Сбербанк
+      - Sber
+      - Sberbank
+    keywords:
+      - банк
+      - финансы
+      - дивиденды
+      - прибыль
+      - кредит
+
+  GAZP:
+    company_names:
+      - Газпром
+      - Gazprom
+    keywords:
+      - газ
+      - экспорт
+      - трубопровод
+      - дивиденды
+      - поставки
+
+  LKOH:
+    company_names:
+      - Лукойл
+      - Lukoil
+    keywords:
+      - нефть
+      - нефтепереработка
+      - экспорт
+      - дивиденды
+
+  YDEX:
+    company_names:
+      - Яндекс
+      - Yandex
+    keywords:
+      - технологии
+      - поиск
+      - такси
+      - маркет
+      - реклама
+
+  TATN:
+    company_names:
+      - Татнефть
+      - Tatneft
+    keywords:
+      - нефть
+      - дивиденды
+      - добыча
+
+  NVTK:
+    company_names:
+      - Новатэк
+      - Novatek
+    keywords:
+      - газ
+      - СПГ
+      - Арктик СПГ
+      - экспорт
+
+  GMKN:
+    company_names:
+      - Норникель
+      - Норильский никель
+      - Norilsk Nickel
+      - Nornickel
+    keywords:
+      - никель
+      - палладий
+      - металлы
+      - дивиденды
+
+  ROSN:
+    company_names:
+      - Роснефть
+      - Rosneft
+    keywords:
+      - нефть
+      - экспорт
+      - добыча
+      - дивиденды
+
+  AFLT:
+    company_names:
+      - Аэрофлот
+      - Aeroflot
+    keywords:
+      - авиаперевозки
+      - пассажиропоток
+      - билеты
+      - рейсы
+
+  MOEX:
+    company_names:
+      - Московская биржа
+      - Мосбиржа
+      - Moscow Exchange
+      - MOEX
+    keywords:
+      - биржа
+      - торги
+      - индекс
+      - объем торгов
+

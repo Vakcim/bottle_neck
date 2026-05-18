@@ -1,0 +1,23 @@
+# Российские ликвидные акции для первого теста.
+# class_code TQBR — основной режим торгов акциями на Московской бирже.
+assets:
+  - ticker: SBER
+    class_code: TQBR
+  - ticker: GAZP
+    class_code: TQBR
+  - ticker: LKOH
+    class_code: TQBR
+  - ticker: YDEX
+    class_code: TQBR
+  - ticker: TATN
+    class_code: TQBR
+  - ticker: NVTK
+    class_code: TQBR
+  - ticker: GMKN
+    class_code: TQBR
+  - ticker: ROSN
+    class_code: TQBR
+  - ticker: AFLT
+    class_code: TQBR
+  - ticker: MOEX
+    class_code: TQBR

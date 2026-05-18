@@ -1,0 +1,13 @@
+# Не используется в v0.1, но фиксируем риск-рамки заранее.
+risk:
+  max_position_per_asset_pct: 10.0
+  max_daily_loss_pct: 1.5
+  max_weekly_loss_pct: 4.0
+  max_open_positions: 5
+  max_trade_risk_pct: 0.3
+  min_signal_confidence: 0.60
+  kill_switch:
+    on_api_errors: true
+    on_data_gap: true
+    on_daily_loss: true
+    on_model_drift: true

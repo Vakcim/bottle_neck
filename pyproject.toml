@@ -1,0 +1,31 @@
+[project]
+name = "tinvest-trading-bot"
+version = "0.1.0"
+description = "Research trading bot data layer for T-Invest API"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.2.0",
+    "pyarrow>=15.0.0",
+    "duckdb>=0.10.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.2.0",
+    "PyYAML>=6.0.0",
+    "typer>=0.12.0",
+    "loguru>=0.7.0",
+    "requests>=2.31.0",
+    "feedparser>=6.0.11",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.5.0",
+]
+
+[tool.ruff]
+line-length = 100
+
+[build-system]
+requires = ["setuptools>=69.0.0"]
+build-backend = "setuptools.build_meta"

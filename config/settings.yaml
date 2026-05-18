@@ -1,0 +1,18 @@
+project:
+  name: tinvest_trading_bot
+  timezone: Europe/Moscow
+
+data:
+  root_dir: ./data
+  candles_dir: candles
+  news_dir: news
+  instruments_dir: instruments
+
+market_data:
+  default_interval: day
+  request_pause_seconds: 0.25
+
+news:
+  gdelt_base_url: "https://api.gdeltproject.org/api/v2/doc/doc"
+  default_language: "Russian"
+  max_records: 250
