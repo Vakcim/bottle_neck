@@ -1,3 +1,9 @@
+"""Order intent schema used before any paper/sandbox/live execution.
+
+The executor must execute approved intents; it must not decide what to trade,
+how many lots to trade, or where to place TP/SL.
+"""
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
@@ -6,16 +12,14 @@ from enum import StrEnum
 from typing import Any
 from uuid import uuid4
 
-from .reason_codes import ReasonCode
 
-
-class OrderMode(StrEnum):
+class ExecutionMode(StrEnum):
     PAPER = "paper"
     SANDBOX = "sandbox"
     LIVE = "live"
 
 
-class OrderSource(StrEnum):
+class IntentSource(StrEnum):
     DAILY_ALPHA = "daily_alpha"
     NEWS_EVENT = "news_event"
     EXIT = "exit"
@@ -26,7 +30,7 @@ class OrderSide(StrEnum):
     SELL = "SELL"
 
 
-class OrderIntentStatus(StrEnum):
+class IntentStatus(StrEnum):
     PLANNED = "planned"
     SUBMITTED = "submitted"
     FILLED = "filled"
@@ -36,94 +40,78 @@ class OrderIntentStatus(StrEnum):
     SKIPPED = "skipped"
 
 
+def utc_now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
 @dataclass(slots=True)
 class OrderIntent:
-    mode: OrderMode
-    source: OrderSource
-    side: OrderSide
+    mode: str
+    source: str
+    side: str
     ticker: str
-    figi: str
+    figi: str | None
     lots: int
     estimated_price: float
     limit_price: float
-    reason_code: ReasonCode
-
+    take_profit_price: float | None
+    stop_loss_price: float | None
+    planned_exit_date: str | None
+    max_loss_rub: float | None
+    expected_order_value: float
+    reason_code: str
+    status: str = IntentStatus.PLANNED.value
     intent_id: str = field(default_factory=lambda: str(uuid4()))
-    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
-
-    take_profit_price: float | None = None
-    stop_loss_price: float | None = None
-    planned_exit_date: str | None = None
-
-    max_loss_rub: float | None = None
-    expected_order_value: float | None = None
-
-    status: OrderIntentStatus = OrderIntentStatus.PLANNED
-
+    created_at: str = field(default_factory=utc_now_iso)
     model_version: str | None = None
     strategy_version: str | None = None
-    planner_version: str | None = None
-
+    planner_version: str = "order_planner_v1"
     linked_signal_id: str | None = None
     linked_event_id: str | None = None
-
     broker_order_id: str | None = None
-    broker_response: str | None = None
-
-    skipped_reason: ReasonCode | None = None
     error_message: str | None = None
 
-    metadata: dict[str, Any] = field(default_factory=dict)
+    def __post_init__(self) -> None:
+        self.ticker = str(self.ticker).upper().strip()
+        self.side = str(self.side)
+        self.mode = str(self.mode)
+        self.source = str(self.source)
+        self.status = str(self.status)
+        self.reason_code = str(self.reason_code)
+        self.lots = int(self.lots)
+        if self.lots < 0:
+            raise ValueError("lots must be non-negative")
+        if self.mode == ExecutionMode.LIVE.value:
+            raise ValueError("live OrderIntent creation is disabled for the current project phase")
+        if self.side == OrderSide.SELL.value and self.lots <= 0:
+            raise ValueError("SELL OrderIntent must have lots > 0")
+        if self.side == OrderSide.BUY.value and self.lots <= 0:
+            raise ValueError("BUY OrderIntent must have lots > 0")
 
-    def mark_skipped(self, reason: ReasonCode, message: str | None = None) -> None:
-        self.status = OrderIntentStatus.SKIPPED
-        self.skipped_reason = reason
-        self.reason_code = reason
-        self.error_message = message
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
 
-    def mark_submitted(self, broker_order_id: str | None = None, broker_response: str | None = None) -> None:
-        self.status = OrderIntentStatus.SUBMITTED
-        self.broker_order_id = broker_order_id
-        self.broker_response = broker_response
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "OrderIntent":
+        return cls(**data)
+
+
+@dataclass(slots=True)
+class SkippedDecision:
+    ticker: str
+    reason_code: str
+    message: str
+    mode: str = ExecutionMode.PAPER.value
+    source: str = IntentSource.DAILY_ALPHA.value
+    created_at: str = field(default_factory=utc_now_iso)
+    linked_signal_id: str | None = None
+    linked_event_id: str | None = None
+    proba_1: float | None = None
+    estimated_price: float | None = None
+    strategy_version: str | None = None
+    planner_version: str = "order_planner_v1"
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
-
-        for key, value in list(data.items()):
-            if isinstance(value, StrEnum):
-                data[key] = value.value
-            elif isinstance(value, datetime):
-                data[key] = value.isoformat()
-
+        data["ticker"] = str(data["ticker"]).upper().strip()
         return data
-
-    @classmethod
-    def skipped(
-        cls,
-        *,
-        mode: OrderMode,
-        source: OrderSource,
-        side: OrderSide,
-        ticker: str,
-        reason_code: ReasonCode,
-        message: str | None = None,
-        figi: str = "",
-        estimated_price: float = 0.0,
-        metadata: dict[str, Any] | None = None,
-    ) -> "OrderIntent":
-        intent = cls(
-            mode=mode,
-            source=source,
-            side=side,
-            ticker=ticker,
-            figi=figi,
-            lots=0,
-            estimated_price=estimated_price,
-            limit_price=0.0,
-            reason_code=reason_code,
-            status=OrderIntentStatus.SKIPPED,
-            skipped_reason=reason_code,
-            error_message=message,
-            metadata=metadata or {},
-        )
-        return intent

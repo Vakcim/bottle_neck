@@ -1,14 +1,18 @@
+"""Canonical reason codes for trading decisions and lifecycle events.
+
+Keep this module dependency-free so it can be reused from scripts, paper mode,
+sandbox executors, backtests, and reports.
+"""
+
 from __future__ import annotations
 
 from enum import StrEnum
 
 
 class ReasonCode(StrEnum):
-    # Buy reasons
     BUY_DAILY_SIGNAL = "BUY_DAILY_SIGNAL"
     BUY_NEWS_EVENT = "BUY_NEWS_EVENT"
 
-    # Skip reasons
     SKIP_LOW_PROBA = "SKIP_LOW_PROBA"
     SKIP_EXCLUDED_TICKER = "SKIP_EXCLUDED_TICKER"
     SKIP_ALREADY_POSITION = "SKIP_ALREADY_POSITION"
@@ -26,32 +30,22 @@ class ReasonCode(StrEnum):
     SKIP_MARKET_NOT_CONFIRMED = "SKIP_MARKET_NOT_CONFIRMED"
     SKIP_RISK_LIMIT = "SKIP_RISK_LIMIT"
     SKIP_SIZE_TOO_SMALL = "SKIP_SIZE_TOO_SMALL"
-    SKIP_NO_PRICE = "SKIP_NO_PRICE"
-    SKIP_NO_FIGI = "SKIP_NO_FIGI"
-    SKIP_NO_LOT = "SKIP_NO_LOT"
 
-    # Sell reasons
     SELL_TAKE_PROFIT = "SELL_TAKE_PROFIT"
     SELL_STOP_LOSS = "SELL_STOP_LOSS"
     SELL_TIME_EXIT = "SELL_TIME_EXIT"
     SELL_NEGATIVE_NEWS = "SELL_NEGATIVE_NEWS"
     HOLD_NO_EXIT_CONDITION = "HOLD_NO_EXIT_CONDITION"
 
-    # Order lifecycle
-    ORDER_PLANNED = "ORDER_PLANNED"
-    ORDER_SUBMITTED = "ORDER_SUBMITTED"
-    ORDER_FILLED = "ORDER_FILLED"
-    ORDER_CANCELLED = "ORDER_CANCELLED"
-    ORDER_REJECTED = "ORDER_REJECTED"
-    ORDER_EXPIRED = "ORDER_EXPIRED"
-
-    # Cancel reasons
-    CANCEL_ORDER_STALE = "CANCEL_ORDER_STALE"
-    CANCEL_MANUAL = "CANCEL_MANUAL"
-
-    # Errors
     ERROR_TINVEST_API = "ERROR_TINVEST_API"
     ERROR_POSITION_RECONCILE = "ERROR_POSITION_RECONCILE"
     ERROR_CONFIG_INVALID = "ERROR_CONFIG_INVALID"
     ERROR_MODEL_MISSING = "ERROR_MODEL_MISSING"
-    ERROR_UNKNOWN = "ERROR_UNKNOWN"
+
+
+def is_skip(reason_code: str | ReasonCode) -> bool:
+    return str(reason_code).startswith("SKIP_")
+
+
+def is_error(reason_code: str | ReasonCode) -> bool:
+    return str(reason_code).startswith("ERROR_")
