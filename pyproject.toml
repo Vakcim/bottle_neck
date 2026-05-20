@@ -2,7 +2,7 @@
 name = "tinvest-trading-bot"
 version = "0.1.0"
 description = "Research trading bot data layer for T-Invest API"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 dependencies = [
     "pandas>=2.2.0",
     "pyarrow>=15.0.0",

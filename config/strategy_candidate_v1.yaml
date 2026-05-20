@@ -1,12 +1,18 @@
 strategy:
   name: candidate_v1
-  threshold: 0.50
+  threshold: 0.5
   hold_days: 7
   max_positions: 3
   fee_round_trip: 0.001
   excluded_tickers:
     - AFLT
     - GAZP
+
+execution:
+  buy_limit_offset_pct: 0.005
+  take_profit_pct: 0.035
+  stop_loss_pct: 0.020
+  sell_limit_offset_pct: 0.005
 
 model:
   type: random_forest

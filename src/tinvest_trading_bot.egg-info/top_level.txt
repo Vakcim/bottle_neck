@@ -1,5 +1,4 @@
 __init__
 connectors
-data
 features
 settings

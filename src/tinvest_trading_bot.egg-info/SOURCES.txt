@@ -5,10 +5,9 @@ src/settings.py
 src/connectors/__init__.py
 src/connectors/gdelt_client.py
 src/connectors/tinkoff_client.py
-src/data/__init__.py
-src/data/storage.py
 src/features/__init__.py
 src/features/market_features.py
+src/features/news_features.py
 src/tinvest_trading_bot.egg-info/PKG-INFO
 src/tinvest_trading_bot.egg-info/SOURCES.txt
 src/tinvest_trading_bot.egg-info/dependency_links.txt
