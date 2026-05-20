@@ -10,6 +10,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 import pandas as pd
 import yaml
 from loguru import logger
+from pandas.errors import EmptyDataError
 
 from src.execution.order_intent import ExecutionMode
 from src.execution.order_planner import OrderPlanner
@@ -39,7 +40,11 @@ def find_latest_signal_file(signals_dir: Path, strategy_name: str) -> Path | Non
 def read_csv_or_empty(path: Path) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame()
-    return pd.read_csv(path)
+
+    try:
+        return pd.read_csv(path)
+    except EmptyDataError:
+        return pd.DataFrame()
 
 
 def load_portfolio_state(data_path: Path) -> dict[str, float]:
